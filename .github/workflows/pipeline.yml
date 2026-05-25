@@ -1,0 +1,52 @@
+name: Data Pipeline Execution
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Clonar el repositorio
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # 2. Configurar uv y la versión de Python instalada en tu entorno
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+        enable-cache: true # Súper importante: activa el caché automático de uv
+
+    # 3. Configurar Python usando uv
+    - name: Set up Python
+      run: uv python install 3.13
+
+    # 4. Sincronizar dependencias usando el archivo uv.lock
+    - name: Install dependencies
+      run: uv sync --frozen
+
+    # 5. Ejecutar el pipeline utilizando el entorno de uv
+    - name: Run Data Pipeline
+      run: |
+        uv run Scripts/Pipeline.py
+
+    # 6. Guardar los logs como Artefactos (siempre se ejecuta, pase o falle)
+    - name: Upload Pipeline Logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: pipeline-logs
+        path: Data/Logs/
+
+    # 7. Guardar la Base de Datos generada (solo si el pipeline tiene éxito)
+    - name: Upload SQLite Database
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: telco-churn-database
+        path: Data/Sql/db_telco_churn.sqlite
