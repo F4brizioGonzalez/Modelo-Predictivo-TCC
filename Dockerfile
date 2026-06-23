@@ -13,12 +13,22 @@ COPY pyproject.toml uv.lock ./
 # 5. Instalar dependencias desde uv.lock
 RUN uv sync --frozen --no-install-project
 
+RUN mkdir -p Data/Logs Data/Processed Data/Sql Reports/Performance Reports/ModelPredictive
 
 # 6. Copiar el resto del proyecto
 COPY . .
 
 # Crear la estructura de carpetas necesaria para los datos y logs
 RUN mkdir -p Data/Logs Data/Processed Data/Sql
+
+# Medidas de Seguridad para limitar los permisos del contenedor
+RUN useradd -m appuser 
+COPY --chown=appuser:appuser . .
+USER appuser
+
+# Puerto de StreamLite
+EXPOSE 8501
+
 
 # Comando por defecto ejecutado a través del entorno virtual de uv
 CMD ["uv", "run", "Scripts/Pipeline.py"]

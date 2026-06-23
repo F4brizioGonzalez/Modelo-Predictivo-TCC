@@ -15,7 +15,7 @@ os.makedirs("Data/Sql", exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - [Etapa 4 - Carga]: %(message)s',
-    handlers=[logging.FileHandler(LOG_CARGA, encoding="utf-8"), logging.StreamHandler()]
+    handlers=[logging.FileHandler(LOG_CARGA, mode='w', encoding="utf-8"), logging.StreamHandler()]
 )
 
 def cargar_datos():

@@ -1,0 +1,34 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+
+# Entornos virtuales
+.venv
+venv
+.uv/
+
+# IDE
+.vscode
+.idea
+
+# Logs
+Data/Logs/*
+
+# Base de datos local
+Data/Sql/*.sqlite
+
+# Datos procesados
+Data/Processed/*
+
+# Reportes
+Reports/Performance/*
+Reports/ModelPredictive/*
+
+# Sistema
+.DS_Store
+Thumbs.db

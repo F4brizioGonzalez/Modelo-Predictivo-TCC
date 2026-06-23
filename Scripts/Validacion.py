@@ -1,7 +1,8 @@
 import pandas as pd
-import pandera as pa  
-from pandera import Column, Check, DataFrameSchema
+import pandera.pandas as pa  
+from pandera.pandas import Column, Check, DataFrameSchema
 import logging
+import os
 
 
 # Configuración básica de logging
@@ -9,7 +10,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - [Etapa 3 - Validación]: %(message)s',
     handlers=[
-        logging.FileHandler("Data/Logs/03_Validacion.log", encoding="utf-8"),
+        logging.FileHandler("Data/Logs/03_Validacion.log", mode='w', encoding="utf-8"),
         logging.StreamHandler()
     ]
 )
@@ -82,12 +83,14 @@ def validacion_datos(file_path: str):
 
 if __name__ == "__main__":
     csv_input = "Data/Processed/Processing/02_Limpieza_Transformacion.csv"
+    os.makedirs(os.path.dirname(csv_input), exist_ok=True)
     
     # Corregido: Llamada real a la función de validación
     success, clean_df = validacion_datos(csv_input)
     
     if success and clean_df is not None:
         output_path = 'Data/Processed/Validation/03_Validacion.csv'
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
         clean_df.to_csv(output_path, index=False)
         logging.info(f"Datos validados exitosamente guardados en '{output_path}'")
     else:

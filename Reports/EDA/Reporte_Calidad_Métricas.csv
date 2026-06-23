@@ -1,0 +1,22 @@
+Variable,Tipo_Dato,Valores_Nulos,Pct_Nulos,Media,Moda,Percentil_25,Percentil_50_Mediana,Percentil_75
+customerID,str,0,0.0,N/A,0002-ORFBO,N/A,N/A,N/A
+gender,str,0,0.0,N/A,Male,N/A,N/A,N/A
+SeniorCitizen,int64,0,0.0,0.1621,0,0.0,0.0,0.0
+Partner,str,0,0.0,N/A,No,N/A,N/A,N/A
+Dependents,str,0,0.0,N/A,No,N/A,N/A,N/A
+tenure,int64,0,0.0,32.3711,1,9.0,29.0,55.0
+PhoneService,str,0,0.0,N/A,Yes,N/A,N/A,N/A
+MultipleLines,str,0,0.0,N/A,No,N/A,N/A,N/A
+InternetService,str,0,0.0,N/A,Fiber optic,N/A,N/A,N/A
+OnlineSecurity,str,0,0.0,N/A,No,N/A,N/A,N/A
+OnlineBackup,str,0,0.0,N/A,No,N/A,N/A,N/A
+DeviceProtection,str,0,0.0,N/A,No,N/A,N/A,N/A
+TechSupport,str,0,0.0,N/A,No,N/A,N/A,N/A
+StreamingTV,str,0,0.0,N/A,No,N/A,N/A,N/A
+StreamingMovies,str,0,0.0,N/A,No,N/A,N/A,N/A
+Contract,str,0,0.0,N/A,Month-to-month,N/A,N/A,N/A
+PaperlessBilling,str,0,0.0,N/A,Yes,N/A,N/A,N/A
+PaymentMethod,str,0,0.0,N/A,Electronic check,N/A,N/A,N/A
+MonthlyCharges,float64,0,0.0,64.7617,20.05,35.5,70.35,89.85
+TotalCharges,str,0,0.0,N/A, ,N/A,N/A,N/A
+Churn,str,0,0.0,N/A,No,N/A,N/A,N/A

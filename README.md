@@ -31,17 +31,29 @@ Los scripts principales automatizan cada etapa del pipeline:
 ### 3. Gestión de datos
 El proyecto organiza la información en distintas capas:
 
+- `Dashboard/` → Panel de control.
 - `Data/Raw/` → Datos originales.
 - `Data/Processed/` → Datos procesados.
 - `Data/Logs/` → Logs y trazabilidad.
 - `Data/Sql/` → Base de datos SQLite.
+- `EDA/` → Análisis de calidad de los datos.
+- `ModeloPredictivo/` → Contrucción del modelo predictivo.
+- `Performance/` → Rendimiento del pipeline.
+- `Reports/EDA/` → Gráficos del analisis de calidad de los datos.
+- `Reports/Figures/Modelo/` → Gráficos de métricas del modelo.
+- `Reports/Figures/Performance/` → Gráficos de métricas de rendimiento del pipeline.
+- `Reports/ModelPredictive/` → Reportes y resultados de algoritmos.
+- `Reports/Performance/` → Logs de rendmiento del pipeline.
+- `Scripts/` → Automatización.
 
 ### 4. Seguridad y trazabilidad
 El pipeline incorpora:
 
 - Registro de logs por etapa.
 - Identificadores únicos por ejecución.
-- Anonimización de datos sensibles mediante SHA-256.
+- Anonimización de datos sensibles mediante SHA-256 + Salt.
+- Matriz de Roles
+- Cifrado en ruta
 
 ---
 
@@ -54,7 +66,13 @@ El pipeline incorpora:
 - SQLite
 - Logging (Python)
 - Docker
+- Docker Compose
 - Git / GitHub
+- Scikit-Learn
+- Streamlit
+- Plotly
+- Matplotlib
+- Seaborn
 
 ---
 
@@ -72,6 +90,26 @@ docker build -t modelo-predictivo-tcc .
 
 ```bash
 docker run --rm modelo-predictivo-tcc
+```
+
+## Despliegue de Infraestructura Docker Compose
+
+### Construcción de las imágenes y levantamiento de los servicios
+
+```bash
+docker docker compose up --build 
+```
+
+### Limpiar los contenedores previos y levantar el entorno desde cero:
+
+```bash
+docker docker compose down && docker compose up --build
+```
+
+### Monitorear logs de la infraestructura
+
+```bash
+docker docker-compose logs -f pipeline                                                                                              
 ```
 
 ---
@@ -170,6 +208,8 @@ La documentación técnica y evidencias del pipeline se encuentran en:
 
 
 - [Informe Técnico](Docs/Informe_Tecnico_TelcoCustomerChurn.pdf)
+- [Informe Técnico IA](Docs/Ev3_Informe_Tecnico_TelcoCustomerChurn.pdf)
+
 
 ---
 
