@@ -52,7 +52,7 @@ def ejecutar_pipeline():
         logging.critical(f"FALLO CRÍTICO EN ETAPA 1: {e}")
         sys.exit(1)
 
-    # ETAPA 2: Limpieza y Transformación}
+    # ETAPA 2: Limpieza y Transformación
 
     logging.info("-" * 70)
     logging.info("[ETAPA 2] Iniciando módulo de Limpieza y Transformación...")

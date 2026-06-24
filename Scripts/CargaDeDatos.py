@@ -8,7 +8,7 @@ RUTA_ENTRADA = 'Data/Processed/Validation/03_Validacion.csv'
 DB_NAME = 'Data/Sql/db_telco_churn.sqlite'
 LOG_CARGA = 'Data/Logs/04_Carga_Datos.log'
 
-# Asegurar la existencia de las carpetas necesarias antes de iniciar
+# Asegura la existencia de las carpetas necesarias antes de iniciar
 os.makedirs("Data/Logs", exist_ok=True)
 os.makedirs("Data/Sql", exist_ok=True)
 
@@ -27,7 +27,7 @@ def cargar_datos():
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
 
-    # Creamos la tabla adaptada al Caso de Estudio 1: Telco Customer Churn
+    # Creamos la tabla según campos del CSV
     # Se añade customerID como Clave Primaria (PRIMARY KEY) para evitar duplicados en la base de datos
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS clientes_churn (
@@ -63,7 +63,6 @@ def cargar_datos():
     
     logging.info(f"Iniciando carga por lotes (Batch) de {len(df)} registros a SQLite...")
 
-    # Mapeo posicional exacto de variables para la sentencia SQL
     query_insert = """
         INSERT OR REPLACE INTO clientes_churn (
             customerID, gender, SeniorCitizen, Partner, Dependents, tenure, 
@@ -83,7 +82,7 @@ def cargar_datos():
             exitos += 1
             
         except sqlite3.IntegrityError as e:
-            # Captura violaciones de clave primaria si el cliente ya existe en el Data Warehouse/DB
+            # Captura violaciones de clave primaria si el cliente ya existe en el Data
             logging.error(f"RECHAZADO - Registro Fila {i} (ID: {fila['customerID']}): Error de integridad (Duplicado) -> {e}")
             rechazados += 1
         except Exception as e:

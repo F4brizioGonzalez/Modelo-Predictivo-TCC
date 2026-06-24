@@ -12,7 +12,7 @@ import pandas as pd
 RUTA_REPORTE = 'Reports/Performance/Reporte_Rendimiento.log'
 os.makedirs(os.path.dirname(RUTA_REPORTE), exist_ok=True)
 
-# Creamos un logger específico para no interferir con el del pipeline principal
+# Se crea un logger específico para no interferir con el del pipeline principal
 logger_perf = logging.getLogger("PerformanceMonitor")
 logger_perf.setLevel(logging.INFO)
 
@@ -51,7 +51,7 @@ class PerformanceMonitor:
         consumo_cpu = self.process.cpu_percent(interval=None)
         uso_memoria_final = self.end_memory
         
-        # Captura de errores si la etapa falla
+        # Captura errores si la etapa falla
         hubo_error = "No" if exc_type is None else f"Sí ({exc_type.__name__})"
 
         # Escribir en el log de rendimiento el resultado de la etapa de forma estructurada
@@ -75,17 +75,17 @@ def graficar_rendimiento_pipeline(historial):
     if not historial:
         return
         
-    # Convertir el historial real a un DataFrame de Pandas
+    # Convierte el historial a un DataFrame de Pandas
     df = pd.DataFrame(historial)
 
     # Configuración Directorio
     carpeta_salida = "Reports/Figures/Performance"
     os.makedirs(carpeta_salida, exist_ok=True)
     
-    # Configurar el estilo visual con Seaborn
+    # Configura el estilo visual con Seaborn
     sns.set_theme(style="whitegrid")     
     
-    # 1. Gráfico de Tiempo de Ejecución (Corregido)
+    # 1. Gráfico de Tiempo de Ejecución
     fig, ax = plt.subplots(figsize=(8, 5))
     df_time = df.sort_values(by="Tiempo", ascending=True)
     sns.barplot(x="Tiempo", y="Etapa", data=df_time, ax=ax, palette="Blues_r", hue="Etapa", legend=False)
@@ -96,7 +96,7 @@ def graficar_rendimiento_pipeline(historial):
     plt.savefig(f"{carpeta_salida}/rendimiento_tiempo.png", dpi=300)
     plt.close
     
-    # 2. Gráfico de Consumo de CPU (Corregido)
+    # 2. Gráfico de Consumo de CPU
     fig, ax = plt.subplots(figsize=(8, 5))
     df_cpu = df.sort_values(by="CPU", ascending=True)
     sns.barplot(x="CPU", y="Etapa", data=df_cpu, ax=ax, palette="Oranges_r", hue="Etapa", legend=False)
@@ -107,7 +107,7 @@ def graficar_rendimiento_pipeline(historial):
     plt.savefig(f"{carpeta_salida}/rendimiento_cpu.png", dpi=300)
     plt.close
     
-    # 3. Gráfico de Uso de Memoria RAM (Corregido)
+    # 3. Gráfico de Uso de Memoria RAM
     fig, ax = plt.subplots(figsize=(8, 5))
     df_ram = df.sort_values(by="RAM", ascending=True)
     sns.barplot(x="RAM", y="Etapa", data=df_ram, ax=ax, palette="Greens_r", hue="Etapa", legend=False)
@@ -137,7 +137,7 @@ def generar_reporte_final():
     etapa_mas_cpu = max(historial_Rendimiento, key=lambda x: x["CPU"])
     etapa_mas_ram = max(historial_Rendimiento, key=lambda x: x["RAM"])
 
-    # 3. Escribir el Reporte Final en el archivo de Logs
+    # 3. Escribe el Reporte Final en el archivo de Logs
     logger_perf.info("================================================================")
     logger_perf.info("=== REPORTE DE RENDIMIENTO DEL PIPELINE COMPLETO ===")
     logger_perf.info("================================================================")
@@ -147,7 +147,7 @@ def generar_reporte_final():
     logger_perf.info(f"Errores detectados en flujo: {errores_detectados}")
     logger_perf.info("-" * 64)
     
-    # Conclusiones automatizadas
+    # Conclusiones del Pipeline (automatizadas)
     logger_perf.info("CUELLO DE BOTELLA POR TIEMPO:")
     logger_perf.info(f" -> [{etapa_mas_lenta['Etapa']}] con {etapa_mas_lenta['Tiempo']:.4f} segundos.")
     logger_perf.info("-" * 64)

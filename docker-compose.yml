@@ -7,7 +7,7 @@ services:
     volumes:
       - data_shared:/app/Data
       - reports_shared:/app/Reports
-    # Ejecuta el pipeline de DataOps/MLOps
+    # Ejecuta el pipeline
     command: ["uv", "run", "Scripts/Pipeline.py"]
 
   dashboard:
@@ -18,7 +18,7 @@ services:
     volumes:
       - data_shared:/app/Data
       - reports_shared:/app/Reports
-    # Sobreescribimos el comando para levantar Streamlit apuntando a tu App.py
+    # Sobreescribimos el comando para levantar Streamlit → App.py
     command: ["uv", "run", "streamlit", "run", "Dashboard/App.py", "--server.port=8501", "--server.address=0.0.0.0"]
     depends_on:
       pipeline:

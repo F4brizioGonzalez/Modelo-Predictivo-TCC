@@ -14,23 +14,23 @@ ruta_modelo = 'Reports/ModelPredictive/modelo_churn.pkl'
 
 print("Cargando modelo y datos necesarios...")
 
-# Verificar si el modelo existe
+# Verifica si el modelo existe
 if not os.path.exists(ruta_modelo):
     print(f"Error: No se encontró el modelo en '{ruta_modelo}'. Primero debes ejecutar el script de entrenamiento.")
     exit()
 
-# Cargar el pipeline/modelo guardado
+# Carga el modelo
 model_pipeline = joblib.load(ruta_modelo)
 
-# Cargar y limpiar el dataset como lo hace el entrenamiento
+# Carga y limpia el dataset como lo hace el entrenamiento
 df = pd.read_csv(ruta_datos)
 df['TotalCharges'] = df['TotalCharges'].fillna(0)
 
-# 2. Replicar la misma separación de datos del entrenamiento
+# 2. Replica la misma separación de datos del entrenamiento
 X = df.drop(columns=['customerID', 'Churn'], errors='ignore')
 y = df['Churn'].apply(lambda x: 1 if x == 'Yes' else 0)
 
-# Es vital usar exactamente el mismo random_state y stratify para mantener consistencia
+# Se mantiene mismas configuraciones del archivo entrenamineto para mantener consistencias
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
 print("Calculando predicciones y probabilidades de prueba...")

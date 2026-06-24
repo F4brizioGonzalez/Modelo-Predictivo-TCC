@@ -4,7 +4,6 @@ import logging
 import uuid
 import os
 
-
 # Definir la ruta del archivo CSV
 ruta_csv = "Data/Raw/02_Base_WA_Fn-UseC_-Telco-Customer-Churn.csv"
 os.makedirs(os.path.dirname(ruta_csv), exist_ok=True)

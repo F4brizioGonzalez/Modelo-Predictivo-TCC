@@ -3,12 +3,12 @@ import pandas as pd
 import numpy as np
 import logging
 
-# Configuración de rutas corporativas
+# Configuración de rutas 
 ruta_entrada = "Data/Processed/Ingesta/01_Extraccion_Datos.csv"
 carpeta_reportes = "Reports/EDA"
 os.makedirs(carpeta_reportes, exist_ok=True)
 
-# Configuración del Logging estilo DataOps
+# Configuración del Logging 
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - [EDA - Calidad de Datos]: %(message)s',
@@ -31,15 +31,14 @@ def auditoria_calidad_datos(ruta_csv):
             pct_nulos = (nulos / total_filas) * 100
             tipo_dato = df[col].dtype
             
-            # SOLUCIÓN: Verificación nativa de la API de Pandas compatible con StringDtype
             if pd.api.types.is_numeric_dtype(df[col]):
                 media = df[col].mean()
                 moda = df[col].mode().iloc[0] if not df[col].mode().empty else np.nan
                 p25 = df[col].quantile(0.25)
-                p50 = df[col].quantile(0.50)  # Mediana
+                p50 = df[col].quantile(0.50) 
                 p75 = df[col].quantile(0.75)
             else:
-                # Categóricas/Strings no tienen percentiles numéricos
+
                 media, p25, p50, p75 = "N/A", "N/A", "N/A", "N/A"
                 moda = df[col].mode().iloc[0] if not df[col].mode().empty else np.nan
             
@@ -60,10 +59,8 @@ def auditoria_calidad_datos(ruta_csv):
         df_reporte.to_csv(ruta_guardado, index=False)
         logging.info(f"Auditoría completada con éxito. Reporte métrico guardado en: {ruta_guardado}")
         
-        # --- FASE DE IMPUTACIÓN Y TRATAMIENTO PREVENTIVO ---
         logging.info("Aplicando reglas operacionales de imputación...")
         
-        # Ajuste de TotalCharges eliminando espacios vacíos latentes e imputando nulos
         if 'TotalCharges' in df.columns:
             df['TotalCharges'] = pd.to_numeric(df['TotalCharges'].astype(str).str.strip(), errors='coerce')
             conteo_nulos_antes = df['TotalCharges'].isna().sum()

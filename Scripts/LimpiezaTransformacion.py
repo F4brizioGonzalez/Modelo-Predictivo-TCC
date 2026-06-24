@@ -5,7 +5,7 @@ import uuid
 import hashlib
 import os
 
-# Definir la ruta del archivo CSV a procesar
+# Definir la ruta del archivo CSV 
 ruta_csv = "Data/Processed/Ingesta/01_Extraccion_Datos.csv"
 os.makedirs(os.path.dirname(ruta_csv), exist_ok=True)
 
@@ -30,13 +30,13 @@ def encryptar_customerID(customerID, salt="Salt_Unico"):
     texto_a_encriptar = f"{salt}{str(customerID)}"
     return hashlib.sha256(texto_a_encriptar.encode()).hexdigest()[:8]
 
-# NUEVA FUNCIÓN: Modulo de procesamiento por bloque o dataset completo
+# NUEVA FUNCIÓN: Modulo de procesamiento por bloque
 def procesar_bloque(df, run_id):
 
     if df is None or df.empty:
         return df
 
-    # 1. LIMPIEZA GENÉRICA: Eliminar columnas 100% vacías (Observación 1)
+    # 1. LIMPIEZA GENÉRICA: Eliminar columnas 100% vacías
     columnas_antes = df.shape[1]
     df = df.dropna(how='all', axis=1)
     columnas_despues = df.shape[1]

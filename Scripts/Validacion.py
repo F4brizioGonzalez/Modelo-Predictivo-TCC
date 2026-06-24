@@ -42,7 +42,6 @@ telco_schema = DataFrameSchema(
         "TotalCharges": Column(pa.Float64, Check.ge(0), nullable=True),
         "Churn": Column(pa.String, Check.isin(["No", "Yes"]))
     },
-    # Validación Semántica Cruzada: Regla de negocio compleja
     checks=Check(
         lambda df: df[df["tenure"] == 0]["TotalCharges"].isna().all() or 
                   (df[df["tenure"] == 0]["TotalCharges"] == 0).all(),
@@ -84,8 +83,7 @@ def validacion_datos(file_path: str):
 if __name__ == "__main__":
     csv_input = "Data/Processed/Processing/02_Limpieza_Transformacion.csv"
     os.makedirs(os.path.dirname(csv_input), exist_ok=True)
-    
-    # Corregido: Llamada real a la función de validación
+
     success, clean_df = validacion_datos(csv_input)
     
     if success and clean_df is not None:

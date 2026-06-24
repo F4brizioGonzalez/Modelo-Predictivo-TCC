@@ -24,7 +24,7 @@ RUTA_DATOS_LOCAL = 'Data/Processed/Validation/03_Validacion.csv'
 RUTA_MODELO_LOCAL = 'Reports/ModelPredictive/modelo_churn.pkl'
 RUTA_LOGS_LOCAL = 'Reports/Performance/Reporte_Rendimiento.log'
 
-# Inyección de estilos CSS avanzados para control de contraste y legibilidad
+# Configuración de estilos para control de contraste y legibilidad
 st.markdown("""
     <style>
         .main { background-color: #f8f9fa; }
@@ -59,16 +59,16 @@ def cargar_datos_produccion(ruta_datos, _modelo):
         return None, None
         
     df = pd.read_csv(ruta_datos)
-    # Tratamiento idéntico al script Entrenamiento.py
+    # Tratamiento de datos
     df['TotalCharges'] = df['TotalCharges'].fillna(0)
     
-    # Preparar el dataframe predictivo (Negocio)
+    # Prepara el dataframe predictivo
     df_pred = df.copy()
     
     if _modelo is not None:
-        # Extraer variables quitando ID y target real si existen
+        # Extrae variables quitando ID y target real si existen
         X = df.drop(columns=['customerID', 'Churn'], errors='ignore')
-        # Calcular probabilidades reales mediante predict_proba
+        # Calcula probabilidades reales mediante predict_proba
         probabilidades = _modelo.predict_proba(X)[:, 1]
         df_pred['Probabilidad_Abandono %'] = np.round(probabilidades * 100, 1)
     else:
@@ -79,7 +79,6 @@ def cargar_datos_produccion(ruta_datos, _modelo):
         
     df_pred['Prediccion_Final'] = df_pred['Probabilidad_Abandono %'].apply(lambda x: 'Alerta: Riesgo Alto' if x >= 50 else 'Estable')
     
-    # Generar Ground Truth real para la Pestaña de Validación (Métricas de Performance)
     if 'Churn' in df.columns:
         y_real = df['Churn'].apply(lambda x: 1 if str(x).strip().lower() in ['yes', '1'] else 0).values
     else:
@@ -203,7 +202,7 @@ if archivo_cargado is not None:
                 
         columnas_requeridas = ['customerID', 'Contract', 'MonthlyCharges']
         if all(col in df_entrada.columns for col in columnas_requeridas):
-            # Calcular inferencias reales sobre el nuevo lote cargado utilizando el modelo local entrenado
+            # Calcula inferencias reales sobre el nuevo lote cargado utilizando el modelo local entrenado
             df_entrada['TotalCharges'] = df_entrada['TotalCharges'].fillna(0)
             if modelo_pkl is not None:
                 X_new = df_entrada.drop(columns=['customerID', 'Churn'], errors='ignore')
@@ -281,7 +280,7 @@ with tab1:
             try:
                 clf = modelo_pkl.named_steps['classifier']
                 preproc = modelo_pkl.named_steps['preprocessor']
-                # Intentar mapear variables del transformador numérico y categórico
+                # Intenta mapear variables del transformador numérico y categórico
                 nombres_num = preproc.transformers_[0][2]
                 nombres_cat = list(preproc.transformers_[1][1].get_feature_names_out())
                 todas_features = nombres_num + nombres_cat
@@ -326,7 +325,7 @@ with tab1:
 with tab2:
     st.subheader("Métricas de Capacidad Discriminatoria y Calidad Predictiva")
     
-    # 1. Replicar la misma separación del set de entrenamiento para consistencia total
+    # 1. Replica la misma separación del set de entrenamiento para consistencia total
     # Evita que el dashboard tome el 100% de los datos y rompa las métricas del reporte
     if 'Churn' in df_pred.columns:
         X_eval = df_pred.drop(columns=['customerID', 'Churn', 'Probabilidad_Abandono %', 'Prediccion_Final'], errors='ignore')
@@ -340,7 +339,7 @@ with tab2:
             stratify=y_eval
         )
         
-        # 2. Calcular probabilidades reales sobre el 20% de prueba usando el modelo pkl
+        # 2. Calcula probabilidades reales sobre el 20% de prueba usando el modelo pkl
         if modelo_pkl is not None:
             y_prob_c = modelo_pkl.predict_proba(X_test_c)[:, 1]
         else:
