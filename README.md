@@ -92,24 +92,24 @@ docker build -t modelo-predictivo-tcc .
 docker run --rm modelo-predictivo-tcc
 ```
 
-## Despliegue de Infraestructura Docker Compose
+## Despliegue de Infraestructura Docker Compose 
 
-### Construcción de las imágenes y levantamiento de los servicios
+### Construcción de las imágenes y levantamiento de los servicios ← ESTE COMANDO HAY QUE EJECUTAR PARA DESPLEGAR EL MODELO
 
 ```bash
-docker docker compose up --build 
+docker compose up --build
 ```
 
 ### Limpiar los contenedores previos y levantar el entorno desde cero:
 
 ```bash
-docker docker compose down && docker compose up --build
+docker compose down && docker compose up --build 
 ```
 
 ### Monitorear logs de la infraestructura
 
 ```bash
-docker docker-compose logs -f pipeline                                                                                              
+docker-compose logs -f pipeline                                                                                               
 ```
 
 ---
